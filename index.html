@@ -77,16 +77,16 @@ radial-gradient(circle at 50% 80%,rgba(225,29,46,.18),transparent 50%)}
 <p style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">Quantity: <button onclick="chg(-1)">−</button> <input id="qty" value="1" readonly> <button onclick="chg(1)">+</button></p>
 <p>Total Cost: <b id="cost">◆ 0.0002 BNB</b></p>
 <p><button class="goldbtn" onclick="mintAlert()" style="width:100%">◆ MINT NOW</button></p>
-<p id="txlog" class="muted">Contract not deployed yet — mint is disabled. This page will not fake a transaction.</p>
+<p id="txlog" class="muted">Contract is LIVE on BNB Chain: 0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092 — mint via your agent in the section below. This page will not fake a transaction.</p>
 <p class="muted">◆ Powered by BNB Chain</p></div>
 
 <div class="card" id="agent"><h2>Mint with your agent (Binance Agentic Wallet only)</h2>
 <p>Binance Agent Wallet is an <b>agent wallet</b>, not a browser extension. This site intentionally provides <b>no MetaMask, Trust Wallet, or WalletConnect connection</b>, per the project spec.</p>
 <pre>Read currentPrice() and totalMinted() on the Mizukairo contract on BNB Chain (56) first.
-Contract: (not deployed yet — address will appear here after deploy)
+Contract: 0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092
 Then mint(quantity) — selector 0xa0712d68 — with value = currentPrice() × quantity, exactly 0.0002 BNB per NFT.
 Confirm the transaction with me before executing. Report the tx hash and confirm it on-chain before claiming success.</pre>
-<p class="muted">Contract: not deployed yet • BscScan link will appear after deploy.</p></div>
+<p class="muted">Contract: 0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092 • <a href="https://bscscan.com/address/0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092">View on BscScan</a></p></div>
 
 <div class="card" id="collection"><h2>COLLECTION</h2><p class="muted">Discover the legends — Preview only, not owned tokens. Token IDs below follow the reference mockup as examples.</p>
 <p><span class="tab on" onclick="flt('All',this)">All</span><span class="tab" onclick="flt('Common',this)">Common</span><span class="tab" onclick="flt('Uncommon',this)">Uncommon</span><span class="tab" onclick="flt('Rare',this)">Rare</span><span class="tab" onclick="flt('Epic',this)">Epic</span><span class="tab" onclick="flt('Legendary',this)">Legendary</span><span class="tab" onclick="flt('Mythic',this)">Mythic</span></p>
@@ -100,20 +100,20 @@ Confirm the transaction with me before executing. Report the tx hash and confirm
 </div></div>
 
 <div class="card"><h2 style="color:#ffd166">RARITY SYSTEM</h2><p>◆ Common &nbsp; ◆ Uncommon &nbsp; ◆ Rare &nbsp; ◆ Epic &nbsp; ◆ Legendary &nbsp; ◆ Mythic</p>
-<p class="muted">Rarity is a metadata trait. The spec does not state rarity counts/percentages, so no distribution is claimed here. Counts will be published with the metadata before mint opens.</p></div>
+<p class="muted">Rarity is a metadata trait, published openly: Common 555 (50%) • Uncommon 278 (25%) • Rare 167 (15%) • Epic 78 (7%) • Legendary 22 (2%) • Mythic 11 (1%) = 1,111. Contract: 0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092</p></div>
 
 <div class="card" id="about"><h2>About MIZUKAIRO</h2><p>"MIZUKAIRO is a journey into the forgotten realm of Japanese spirits. Inspired by ancient warriors, mythical creatures, and the mysterious beauty of Japanese folklore, each NFT represents a fragment of an eternal legend."</p></div>
 
 <div class="card" id="roadmap"><h2>Roadmap</h2><p>Phase 1: Genesis Collection<br>Phase 2: Public Mint<br>Phase 3: Community Expansion<br>Phase 4: Japanese Mythology Universe</p></div>
 
 <footer class="card"><b>MIZUKAIRO 水界</b><br>
-X: <a href="https://x.com/mizukaironft">@mizukaironft</a> • Discord: to be announced • BscScan: contract not deployed yet<br>
+X: <a href="https://x.com/mizukaironft">@mizukaironft</a> • Discord: to be announced • BscScan: <a href="https://bscscan.com/address/0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092">0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092</a><br>
 <span class="muted">© MIZUKAIRO • BNB Smart Chain Mainnet (56) • ERC-721 • Max 1,111 • 0.0002 BNB</span></footer>
 </div>
 <script>
 let qty=1; const PRICE=0.0002;
 function chg(d){qty=Math.max(1,Math.min(10,qty+d));document.getElementById('qty').value=qty;document.getElementById('cost').textContent='◆ '+(PRICE*qty).toFixed(4)+' BNB';}
-function mintAlert(){document.getElementById('txlog').textContent='Contract not deployed yet. Mint is disabled — this page will not fake a transaction.';}
+function mintAlert(){document.getElementById('txlog').textContent='Contract is LIVE: 0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092. Mint via your agent in the section below — this page will not fake a transaction.';}
 function flt(r,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');document.querySelectorAll('#gal>div').forEach(c=>{c.style.display=(r==='All'||c.dataset.r===r)?'':'none';});}
 
 </script></body></html>

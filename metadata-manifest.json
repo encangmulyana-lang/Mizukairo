@@ -1,0 +1,13 @@
+{
+  "seed": 20261102,
+  "counts": {
+    "Uncommon": 278,
+    "Common": 555,
+    "Rare": 167,
+    "Epic": 78,
+    "Legendary": 22,
+    "Mythic": 11
+  },
+  "contract": "0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092",
+  "baseURI_proposed": "https://mizukairo.vercel.app/metadata/"
+}
