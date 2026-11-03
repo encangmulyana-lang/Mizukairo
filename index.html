@@ -76,12 +76,13 @@ radial-gradient(circle at 50% 80%,rgba(225,29,46,.18),transparent 50%)}
 <p>Total Supply: <b>1,111</b> &nbsp;•&nbsp; Mint Price: <b>0.0002 BNB</b></p>
 <p style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">Quantity: <button onclick="chg(-1)">−</button> <input id="qty" value="1" readonly> <button onclick="chg(1)">+</button></p>
 <p>Total Cost: <b id="cost">◆ 0.0002 BNB</b></p>
-<p><button class="goldbtn" onclick="mintAlert()" style="width:100%">◆ MINT NOW</button></p>
-<p id="txlog" class="muted">Contract is LIVE on BNB Chain: 0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092 — mint via your agent in the section below. This page will not fake a transaction.</p>
+<p><button class="goldbtn" id="connectBtn" onclick="connectWallet()">◆ CONNECT WALLET</button> <button class="goldbtn" id="mintBtn" onclick="mintNFT()" disabled>MINT NFT</button></p>
+<p id="walletStatus" class="muted">Wallet not connected. On a phone, open this site inside a wallet app browser (Binance / MetaMask / Trust Wallet) — a regular phone browser has no wallet to connect. Or use the agent prompt below.</p>
+<p id="txlog" class="muted">Contract is LIVE on BNB Chain: 0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092 — connect your wallet and mint directly, or use the agent prompt below. This page will not fake a transaction.</p>
 <p class="muted">◆ Powered by BNB Chain</p></div>
 
-<div class="card" id="agent"><h2>Mint with your agent (Binance Agentic Wallet only)</h2>
-<p>Binance Agent Wallet is an <b>agent wallet</b>, not a browser extension. This site intentionally provides <b>no MetaMask, Trust Wallet, or WalletConnect connection</b>, per the project spec.</p>
+<div class="card" id="agent"><h2>Mint with your agent (alternative)</h2>
+<p>Direct wallet mint above is now the primary route. The Binance Agentic Wallet agent prompt below remains as an alternative — same contract, same price.</p>
 <pre>Read currentPrice() and totalMinted() on the Mizukairo contract on BNB Chain (56) first.
 Contract: 0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092
 Then mint(quantity) — selector 0xa0712d68 — with value = currentPrice() × quantity, exactly 0.0002 BNB per NFT.
@@ -110,10 +111,13 @@ Confirm the transaction with me before executing. Report the tx hash and confirm
 X: <a href="https://x.com/mizukaironft">@mizukaironft</a> • Discord: to be announced • BscScan: <a href="https://bscscan.com/address/0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092">0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092</a><br>
 <span class="muted">© MIZUKAIRO • BNB Smart Chain Mainnet (56) • ERC-721 • Max 1,111 • 0.0002 BNB</span></footer>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.17.0/dist/ethers.umd.min.js"></script>
 <script>
 let qty=1; const PRICE=0.0002;
 function chg(d){qty=Math.max(1,Math.min(10,qty+d));document.getElementById('qty').value=qty;document.getElementById('cost').textContent='◆ '+(PRICE*qty).toFixed(4)+' BNB';}
-function mintAlert(){document.getElementById('txlog').textContent='Contract is LIVE: 0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092. Mint via your agent in the section below — this page will not fake a transaction.';}
+let mizSigner=null;
+async function connectWallet(){const st=document.getElementById('walletStatus');if(!window.ethereum){st.textContent='No browser wallet detected in this browser. On a phone, open this site inside the Binance / MetaMask / Trust Wallet app browser instead — or use the agent prompt below.';return;}try{const provider=new ethers.BrowserProvider(window.ethereum);await provider.send('eth_requestAccounts',[]);const net=await provider.getNetwork();if(net.chainId!==56n){try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x38'}]});}catch(e){await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x38',chainName:'BNB Smart Chain',nativeCurrency:{name:'BNB',symbol:'BNB',decimals:18},rpcUrls:['https://bsc-dataseed.bnbchain.org'],blockExplorerUrls:['https://bscscan.com']}]});}}mizSigner=await provider.getSigner();const addr=await mizSigner.getAddress();st.textContent='Connected: '+addr.slice(0,6)+'…'+addr.slice(-4)+' (BNB Chain)';document.getElementById('connectBtn').textContent='WALLET CONNECTED';document.getElementById('mintBtn').disabled=false;}catch(e){st.textContent='Connection failed: '+(e.message||e);}}
+async function mintNFT(){const st=document.getElementById('walletStatus');const log=document.getElementById('txlog');if(!mizSigner){st.textContent='Connect your wallet first.';return;}const qty=parseInt(document.getElementById('qty').value)||1;try{log.textContent='Waiting for wallet approval…';const c=new ethers.Contract('0xd6337Ef95fDd13724F474fA3ABD0bF5b0A68A092',['function mint(uint256 quantity) payable'],mizSigner);const tx=await c.mint(qty,{value:BigInt(qty)*200000000000000n});log.textContent='Transaction sent: '+tx.hash+' — waiting for confirmation…';await tx.wait();log.innerHTML='✅ Minted '+qty+' MIZUKAIRO! <a href="https://bscscan.com/tx/'+tx.hash+'" target="_blank" rel="noopener">View on BscScan</a>';}catch(e){log.textContent='Mint failed: '+(e.reason||e.message||e);}}
 function flt(r,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');document.querySelectorAll('#gal>div').forEach(c=>{c.style.display=(r==='All'||c.dataset.r===r)?'':'none';});}
 
 </script></body></html>
