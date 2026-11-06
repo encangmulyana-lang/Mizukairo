@@ -1,0 +1,15 @@
+{
+  "name": "MIZUKAIRO #2514",
+  "description": "MIZUKAIRO is a journey into the forgotten realm of Japanese spirits. Inspired by ancient warriors, mythical creatures, and the mysterious beauty of Japanese folklore, each NFT represents a fragment of an eternal legend. Pixel edition: 5,555 spirits on BNB Chain. Your first mint is free.",
+  "image": "https://mizukairo.xyz/images-v2/uncommon.svg",
+  "attributes": [
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    },
+    {
+      "trait_type": "Character",
+      "value": "Kitsune"
+    }
+  ]
+}
