@@ -66,6 +66,15 @@ footer{text-align:center;padding:30px 20px;color:#888;border-top:2px solid #2a2a
 .promptbox b{color:#ffd700}
 .agentsteps{line-height:2;color:#c9c9dd;padding-left:20px;margin-top:10px;font-size:13px}
 .agentsteps b{color:#ffd700}
+.rm-timeline{border-left:2px solid #2a2a4a;margin-left:8px;padding-left:24px}
+.rm-item{position:relative;margin-bottom:28px}
+.rm-item:before{content:"";position:absolute;left:-29px;top:4px;width:12px;height:12px;background:#0d0d1a;border:2px solid #ffd700}
+.rm-item.done:before,.rm-item.live:before{background:#ffd700}
+.rm-num{font-size:11px;color:#888}
+.rm-status{display:inline-block;font-size:10px;padding:4px 8px;border:2px solid #ffd700;color:#ffd700;margin-left:8px}
+.rm-status.off{border-color:#555;color:#c9c9dd}
+.rm-item h3{font-size:15px;margin:8px 0;color:#fff}
+.rm-item p{color:#c9c9dd;font-size:13px;line-height:1.8}
 .qtyrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .qtyrow input{flex:1;min-width:90px}
 .mkt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:18px}
@@ -180,6 +189,12 @@ section{padding:32px 14px}
 <span data-en="Contract:" data-ja="コントラクト：">Contract:</span> <span id="contractAddr">0x43F046F5C49E54D42913743a8fd2D146CE494C4C</span><br>
 mint(uint256) selector: 0xa0712d68 · priceFor(address,uint256): 0xd527979a · chain: BNB Smart Chain (56)<br>
 <span data-en="Note: the agent checks your wallet's mint count first — your first mint is free, then 0.00015 / 0.0004 / 0.0008 BNB per mint by tier." data-ja="注意：エージェントはまずあなたのウォレットのミント回数を確認します — 最初のミントは無料、その後はティア別に0.00015 / 0.0004 / 0.0008 BNBです。">Note: the agent checks your wallet's mint count first — your first mint is free, then 0.00015 / 0.0004 / 0.0008 BNB per mint by tier.</span>
+</div></section>
+<section><h2 data-en="■ ROADMAP" data-ja="■ ロードマップ">■ ROADMAP</h2><div class="rm-timeline">
+<div class="rm-item done"><span class="rm-num">01</span><span class="rm-status" data-en="DONE" data-ja="完了">DONE</span><h3 data-en="The Spirits Awaken" data-ja="スピリット覚醒">The Spirits Awaken</h3><p data-en="Mizukairo v2 launched — 5,555 pixel spirits on BNB Chain. Your first spirit is FREE, the next ones cost more. Mint is open." data-ja="Mizukairo v2始動 — BNBチェーン上の5,555体のピクセルスピリット。最初の1体は無料。ミント受付中。">Mizukairo v2 launched — 5,555 pixel spirits on BNB Chain. Your first spirit is FREE, the next ones cost more. Mint is open.</p></div>
+<div class="rm-item live"><span class="rm-num">02</span><span class="rm-status" data-en="LIVE" data-ja="開催中">LIVE</span><h3 data-en="Marketplace" data-ja="マーケットプレイス">Marketplace</h3><p data-en="Trade your spirits on-chain — list, buy and cancel right here on mizukairo.xyz. A 5% fee goes to the collection owner." data-ja="オンチェーンでスピリットを取引 — 出品・購入・キャンセルはこのサイトで。手数料5%はコレクションオーナーへ。">Trade your spirits on-chain — list, buy and cancel right here on mizukairo.xyz. A 5% fee goes to the collection owner.</p></div>
+<div class="rm-item"><span class="rm-num">03</span><span class="rm-status off" data-en="NEXT" data-ja="次へ">NEXT</span><h3 data-en="Spread the Word" data-ja="広めよう">Spread the Word</h3><p data-en="More holders, more eyes on the spirits — tweets, posts and community growth." data-ja="もっと多くのホルダーへ — ツイートや投稿でスピリットを広める。">More holders, more eyes on the spirits — tweets, posts and community growth.</p></div>
+<div class="rm-item"><span class="rm-num">04</span><span class="rm-status off" data-en="LATER" data-ja="未定">LATER</span><h3 data-en="What Comes Next" data-ja="これから">What Comes Next</h3><p data-en="The next steps are decided with the holders. Nothing promised in advance." data-ja="次のステップはホルダーと一緒に決めます。先の約束はありません。">The next steps are decided with the holders. Nothing promised in advance.</p></div>
 </div></section>
 <footer><span data-en="MIZUKAIRO — Pixel Spirits · BNB Chain" data-ja="MIZUKAIRO — ピクセルスピリット · BNBチェーン">MIZUKAIRO — Pixel Spirits · BNB Chain</span> · <a href="https://x.com/mizukaironft" target="_blank">@mizukaironft</a><br>
 <span id="contractFoot">0x43F046F5C49E54D42913743a8fd2D146CE494C4C</span><br>
