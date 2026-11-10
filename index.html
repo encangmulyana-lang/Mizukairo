@@ -239,8 +239,9 @@ async function updateCost(){
   const wei=BigInt(res);
   document.getElementById("totalCost").textContent=STR[LANG].totalFor+q+": "+(Number(wei)/1e18).toFixed(5)+" BNB"+(wei===0n?STR[LANG].free:"");
 }
+function noWalletMsg(){ const m=document.getElementById("mintMsg"); m.textContent="No wallet found in this browser. To buy, open this site inside your wallet app browser (MetaMask / Trust Wallet / Binance Wallet), then tap CONNECT WALLET."; m.style.cssText="color:#ff5c5c;font-weight:700;background:#2a0d0d;border:2px solid #ff5c5c;padding:10px;border-radius:8px;display:block;"; }
 async function connectWallet(){
-  if(!window.ethereum){ document.getElementById("mintMsg").textContent="No browser wallet detected. Open this site inside your wallet app browser (MetaMask / Trust Wallet / Binance Wallet)."; return; }
+  if(!window.ethereum){ noWalletMsg(); return; }
   try{
     provider=new ethers.BrowserProvider(window.ethereum);
     await provider.send("eth_requestAccounts",[]);
@@ -254,6 +255,7 @@ async function connectWallet(){
 }
 async function mintNow(){
   if(!CONTRACT){ document.getElementById("mintMsg").textContent="Mint is not open yet."; return; }
+  if(!window.ethereum){ noWalletMsg(); return; }
   if(!signer){ await connectWallet(); if(!signer) return; }
   const q=parseInt(document.getElementById("qty").value)||1;
   if(q<1||q>10){ document.getElementById("mintMsg").textContent="Quantity must be 1–10."; return; }
@@ -305,8 +307,10 @@ async function loadMarket(){
   }
   if(!grid.children.length){ grid.innerHTML="<div class='mkt-note'>"+STR[LANG].mktEmpty+"</div>"; }
 }
+function noWalletMsgMkt(){ const m=document.getElementById("marketMsg"); m.textContent="No wallet found in this browser. To buy, open this site inside your wallet app browser (MetaMask / Trust Wallet / Binance Wallet), then tap CONNECT WALLET."; m.style.cssText="color:#ff5c5c;font-weight:700;background:#2a0d0d;border:2px solid #ff5c5c;padding:10px;border-radius:8px;display:block;"; }
 async function listNow(){
   if(!MARKET){ document.getElementById("marketMsg").textContent=STR[LANG].mktSoon; return; }
+  if(!window.ethereum){ noWalletMsgMkt(); return; }
   if(!signer){ await connectWallet(); if(!signer) return; }
   const id=parseInt(document.getElementById("listTokenId").value);
   const priceStr=document.getElementById("listPrice").value;
@@ -337,6 +341,7 @@ async function listNow(){
 }
 async function buyNow(id,priceWei){
   if(!MARKET) return;
+  if(!window.ethereum){ noWalletMsgMkt(); return; }
   if(!signer){ await connectWallet(); if(!signer) return; }
   try{
     const iface=new ethers.Interface(["function buy(uint256 tokenId)"]);
@@ -349,6 +354,7 @@ async function buyNow(id,priceWei){
 }
 async function cancelNow(id){
   if(!MARKET) return;
+  if(!window.ethereum){ noWalletMsgMkt(); return; }
   if(!signer){ await connectWallet(); if(!signer) return; }
   try{
     const iface=new ethers.Interface(["function cancel(uint256 tokenId)"]);
@@ -361,6 +367,7 @@ async function cancelNow(id){
 }
 async function updatePriceNow(id){
   if(!MARKET) return;
+  if(!window.ethereum){ noWalletMsgMkt(); return; }
   if(!signer){ await connectWallet(); if(!signer) return; }
   const v=window.prompt("New price in BNB:");
   if(v===null) return;
