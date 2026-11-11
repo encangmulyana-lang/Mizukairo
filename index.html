@@ -355,7 +355,7 @@ const SEL_TOTAL = "0xa2309ff8", SEL_PRICEFOR = "0xd527979a";
 const SEL_LISTED = "0x05337198", SEL_LISTING = "0x107a274a", SEL_OWNEROF = "0x6352211e", SEL_TOKENURI = "0xc87b56dd", SEL_ISAPPROVED = "0xe985e9c5";
 let provider=null, signer=null, userAddr=null;
 let LANG="en";
-const STR={en:{loading:"Loading live count…",comingSoon:"Contract coming soon — mint not open yet.",noCount:"Could not load live count — check your connection and refresh.",totalConnect:"Total: connect your wallet to see your price",totalFor:"Total for ",free:" — FREE",ofMinted:" of 5,555 minted (",mktSoon:"Market is coming soon — the marketplace contract is not deployed yet.",mktEmpty:"No spirits listed yet — be the first to list yours below.",mktLoadFail:"Could not load listings — check your connection and refresh.",mktConnect:"Connect your wallet first.",mktNotOwner:"You do not own that token.",mktBadPrice:"Enter a price above 0 BNB.",mktBadId:"Enter a token ID between 1 and 5555.",mktApprove:"Approving the market to hold your NFT…",mktListed:"Listed! Tx: ",mktBought:"Bought! Tx: ",mktCancelled:"Listing cancelled. Tx: ",mktPriceOk:"Price updated. Tx: "},ja:{loading:"ライブカウントを読み込み中…",comingSoon:"コントラクトは近日公開 — まだミントできません。",noCount:"ライブカウントを読み込めませんでした — 接続を確認して更新してください。",totalConnect:"合計：ウォレットを接続して価格を確認",totalFor:"合計 ",free:" — 無料",ofMinted:" / 5,555 ミント済み（",mktSoon:"マーケットは近日公開 — マーケットプレイスのコントラクトはまだデプロイされていません。",mktEmpty:"まだ出品はありません — 最初に出品してみませんか。",mktLoadFail:"出品を読み込めませんでした — 接続を確認して更新してください。",mktConnect:"まずウォレットを接続してください。",mktNotOwner:"そのトークンの所有者ではありません。",mktBadPrice:"0 BNBより大きい価格を入力してください。",mktBadId:"1〜5555のトークンIDを入力してください。",mktApprove:"マーケットへのNFT預け入れを承認中…",mktListed:"出品しました！Tx：",mktBought:"購入しました！Tx：",mktCancelled:"出品をキャンセルしました。Tx：",mktPriceOk:"価格を更新しました。Tx："}};
+const STR={en:{loading:"Loading live count…",comingSoon:"Contract coming soon — mint not open yet.",noCount:"Could not load live count — check your connection and refresh.",totalConnect:"Total: connect your wallet to see your price",totalFor:"Total for ",free:" — FREE",ofMinted:" of 5,555 minted (",mktSoon:"Market is coming soon — the marketplace contract is not deployed yet.",mktEmpty:"No spirits listed yet — be the first to list yours below.",mktLoadFail:"Could not load listings — check your connection and refresh.",mktConnect:"Connect your wallet first.",mktNotOwner:"You do not own that token.",mktBadPrice:"Enter a price above 0 BNB.",mktBadId:"Enter a token ID between 1 and 5555.",mktApprove:"Approving the market to hold your NFT…",mktListed:"Listed! Tx: ",mktBought:"Bought! Tx: ",mktCancelled:"Listing cancelled. Tx: ",mktPriceOk:"Price updated. Tx: ",txWalletFee:"Your wallet could not prepare this transaction (empty answer from the browser). Open this site inside your wallet app browser (MetaMask / Trust Wallet / Binance Wallet) and try again."},ja:{loading:"ライブカウントを読み込み中…",comingSoon:"コントラクトは近日公開 — まだミントできません。",noCount:"ライブカウントを読み込めませんでした — 接続を確認して更新してください。",totalConnect:"合計：ウォレットを接続して価格を確認",totalFor:"合計 ",free:" — 無料",ofMinted:" / 5,555 ミント済み（",mktSoon:"マーケットは近日公開 — マーケットプレイスのコントラクトはまだデプロイされていません。",mktEmpty:"まだ出品はありません — 最初に出品してみませんか。",mktLoadFail:"出品を読み込めませんでした — 接続を確認して更新してください。",mktConnect:"まずウォレットを接続してください。",mktNotOwner:"そのトークンの所有者ではありません。",mktBadPrice:"0 BNBより大きい価格を入力してください。",mktBadId:"1〜5555のトークンIDを入力してください。",mktApprove:"マーケットへのNFT預け入れを承認中…",mktListed:"出品しました！Tx：",mktBought:"購入しました！Tx：",mktCancelled:"出品をキャンセルしました。Tx：",mktPriceOk:"価格を更新しました。Tx：",txWalletFee:"ウォレットが取引を準備できませんでした（ブラウザからの応答が空でした）。MetaMask / Trust Wallet / Binance Wallet のアプリ内ブラウザでこのサイトを開いて、もう一度お試しください。"}};
 function setLang(l){ LANG=l; document.getElementById("langEn").classList.toggle("on",l==="en"); document.getElementById("langJa").classList.toggle("on",l==="ja"); document.querySelectorAll("[data-en]").forEach(el=>{ if(el.id==="connectBtn"&&userAddr) return; el.textContent=el.dataset[l==="ja"?"ja":"en"]; }); document.querySelectorAll("[data-en-html]").forEach(el=>{ el.innerHTML=el.dataset[l==="ja"?"jaHtml":"enHtml"]; }); refresh(); updateCost(); }
 async function rpcCall(to,data){
   for(const url of RPCS){
@@ -412,12 +412,12 @@ async function mintNow(){
     const res=await rpcCall(CONTRACT,data);
     const value=res?BigInt(res):0n;
     const iface=new ethers.Interface(["function mint(uint256 quantity)"]);
-    const tx=await signer.sendTransaction({to:CONTRACT,data:iface.encodeFunctionData("mint",[q]),value});
+    const tx=await sendTx({to:CONTRACT,data:iface.encodeFunctionData("mint",[q]),value},300000);
     document.getElementById("mintMsg").textContent="Transaction sent: "+tx.hash+" — waiting for confirmation…";
     await tx.wait();
     document.getElementById("mintMsg").textContent="Minted! Tx: "+tx.hash;
     refresh();
-  }catch(e){ document.getElementById("mintMsg").textContent="Mint failed: "+(e.reason||e.message||e); }
+  }catch(e){ document.getElementById("mintMsg").textContent="Mint failed: "+txErrMsg(e); }
 }
 
 function shortAddr(a){ return a.slice(0,6)+"…"+a.slice(-4); }
@@ -456,6 +456,21 @@ async function loadMarket(){
   if(!grid.children.length){ grid.innerHTML="<div class='mkt-note'>"+STR[LANG].mktEmpty+"</div>"; }
 }
 function noWalletMsgMkt(){ const m=document.getElementById("marketMsg"); m.textContent="No wallet found in this browser. To buy, open this site inside your wallet app browser (MetaMask / Trust Wallet / Binance Wallet), then tap CONNECT WALLET."; m.style.cssText="color:#ff5c5c;font-weight:700;background:#2a0d0d;border:2px solid #ff5c5c;padding:10px;border-radius:8px;display:block;"; }
+async function rpcGasPrice(){
+  for(const url of RPCS){
+    try{ const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_gasPrice",params:[]})});
+      const j=await r.json(); if(j.result) return BigInt(j.result); }catch(e){}
+  } return 1000000000n;
+}
+function txErrMsg(e){
+  const m=(e&&e.message)||String(e||"");
+  if(m.indexOf("invalid BigNumberish")>=0||m.indexOf("value=null")>=0){ return STR[LANG].txWalletFee; }
+  return (e&&e.reason)||m;
+}
+async function sendTx(tx,gasLimit){
+  const gp=await rpcGasPrice();
+  return signer.sendTransaction({...tx,gasPrice:gp,gasLimit:BigInt(gasLimit)});
+}
 async function listNow(){
   if(!MARKET){ document.getElementById("marketMsg").textContent=STR[LANG].mktSoon; return; }
   if(!window.ethereum){ noWalletMsgMkt(); return; }
@@ -476,16 +491,16 @@ async function listNow(){
     if(!approved){
       document.getElementById("marketMsg").textContent=STR[LANG].mktApprove;
       const ifaceA=new ethers.Interface(["function setApprovalForAll(address operator, bool approved)"]);
-      const txA=await signer.sendTransaction({to:CONTRACT,data:ifaceA.encodeFunctionData("setApprovalForAll",[MARKET,true])});
+      const txA=await sendTx({to:CONTRACT,data:ifaceA.encodeFunctionData("setApprovalForAll",[MARKET,true])},100000);
       await txA.wait();
     }
     const iface=new ethers.Interface(["function list(uint256 tokenId, uint256 price)"]);
-    const tx=await signer.sendTransaction({to:MARKET,data:iface.encodeFunctionData("list",[id,priceWei])});
+    const tx=await sendTx({to:MARKET,data:iface.encodeFunctionData("list",[id,priceWei])},300000);
     document.getElementById("marketMsg").textContent="Transaction sent: "+tx.hash+" — waiting for confirmation…";
     await tx.wait();
     document.getElementById("marketMsg").textContent=STR[LANG].mktListed+tx.hash;
     loadMarket();
-  }catch(e){ document.getElementById("marketMsg").textContent="List failed: "+(e.reason||e.message||e); }
+  }catch(e){ document.getElementById("marketMsg").textContent="List failed: "+txErrMsg(e); }
 }
 async function buyNow(id,priceWei){
   if(!MARKET) return;
@@ -493,12 +508,12 @@ async function buyNow(id,priceWei){
   if(!signer){ await connectWallet(); if(!signer) return; }
   try{
     const iface=new ethers.Interface(["function buy(uint256 tokenId)"]);
-    const tx=await signer.sendTransaction({to:MARKET,data:iface.encodeFunctionData("buy",[id]),value:BigInt(priceWei)});
+    const tx=await sendTx({to:MARKET,data:iface.encodeFunctionData("buy",[id]),value:BigInt(priceWei)},300000);
     document.getElementById("marketMsg").textContent="Transaction sent: "+tx.hash+" — waiting for confirmation…";
     await tx.wait();
     document.getElementById("marketMsg").textContent=STR[LANG].mktBought+tx.hash;
     loadMarket(); refresh();
-  }catch(e){ document.getElementById("marketMsg").textContent="Buy failed: "+(e.reason||e.message||e); }
+  }catch(e){ document.getElementById("marketMsg").textContent="Buy failed: "+txErrMsg(e); }
 }
 async function cancelNow(id){
   if(!MARKET) return;
@@ -506,12 +521,12 @@ async function cancelNow(id){
   if(!signer){ await connectWallet(); if(!signer) return; }
   try{
     const iface=new ethers.Interface(["function cancel(uint256 tokenId)"]);
-    const tx=await signer.sendTransaction({to:MARKET,data:iface.encodeFunctionData("cancel",[id])});
+    const tx=await sendTx({to:MARKET,data:iface.encodeFunctionData("cancel",[id])},200000);
     document.getElementById("marketMsg").textContent="Transaction sent: "+tx.hash+" — waiting for confirmation…";
     await tx.wait();
     document.getElementById("marketMsg").textContent=STR[LANG].mktCancelled+tx.hash;
     loadMarket();
-  }catch(e){ document.getElementById("marketMsg").textContent="Cancel failed: "+(e.reason||e.message||e); }
+  }catch(e){ document.getElementById("marketMsg").textContent="Cancel failed: "+txErrMsg(e); }
 }
 async function updatePriceNow(id){
   if(!MARKET) return;
@@ -524,12 +539,12 @@ async function updatePriceNow(id){
   if(priceWei<=0n){ document.getElementById("marketMsg").textContent=STR[LANG].mktBadPrice; return; }
   try{
     const iface=new ethers.Interface(["function updatePrice(uint256 tokenId, uint256 newPrice)"]);
-    const tx=await signer.sendTransaction({to:MARKET,data:iface.encodeFunctionData("updatePrice",[id,priceWei])});
+    const tx=await sendTx({to:MARKET,data:iface.encodeFunctionData("updatePrice",[id,priceWei])},200000);
     document.getElementById("marketMsg").textContent="Transaction sent: "+tx.hash+" — waiting for confirmation…";
     await tx.wait();
     document.getElementById("marketMsg").textContent=STR[LANG].mktPriceOk+tx.hash;
     loadMarket();
-  }catch(e){ document.getElementById("marketMsg").textContent="Update price failed: "+(e.reason||e.message||e); }
+  }catch(e){ document.getElementById("marketMsg").textContent="Update price failed: "+txErrMsg(e); }
 }
 
 document.getElementById("qty").addEventListener("input",()=>{updateCost();syncPrompt();});
